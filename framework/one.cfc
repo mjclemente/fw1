@@ -109,6 +109,8 @@ component {
             action = getSubsystemSectionAndItem();
         } else if ( left( action, 2 ) == '.?' ) {
             action = replace( action, '.', getSubsystemSectionAndItem() );
+        } else {
+            action = getSubsystemSectionAndItem( action );
         }
         var pathData = resolveBaseURL( action, path );
         path = pathData.path;
@@ -2340,14 +2342,12 @@ component {
 
     private struct function resolveBaseURL( string action = '.', string path = variables.magicBaseURL ) {
         if ( path == variables.magicBaseURL ) path = getBaseURL();
-        if ( path == 'useSubsystemConfig' ) {
             var subsystemConfig = getSubsystemConfig( getSubsystem( action ) );
             if ( structKeyExists( subsystemConfig, 'baseURL' ) ) {
                 path = subsystemConfig.baseURL;
             } else {
                 path = getBaseURL();
             }
-        }
         var omitIndex = false;
         var optionalOmit = false;
         if ( path == 'useCgiScriptName' ) {
